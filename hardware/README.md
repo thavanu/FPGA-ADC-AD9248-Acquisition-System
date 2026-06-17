@@ -34,6 +34,7 @@ Analog Signal
 
 # FPGA Development Board
 
+
 ## Description
 
 The FPGA used in this project is a Spartan-6 XC6SLX9 development board purchased from AliExpress.
@@ -74,7 +75,7 @@ This board was first used to learn:
 ---
 
 # AD9248 ADC Module
-
+![adc](adc_aliexpress.png)
 ## Description
 
 The ADC used in this project is based on the AD9248.
