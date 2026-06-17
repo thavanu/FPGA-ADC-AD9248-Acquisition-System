@@ -42,7 +42,7 @@ The FPGA used in this project is a Spartan-6 XC6SLX9 development board purchased
 
 * Xilinx Spartan-6 XC6SLX9
 * On-board SPI Flash
-* On-board USB-JTAG programmer
+* On-board JTAG programmer
 * On-board USB-UART converter
 * 50 MHz oscillator
 * GPIO expansion headers
