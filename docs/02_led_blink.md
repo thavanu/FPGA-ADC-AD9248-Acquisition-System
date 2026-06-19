@@ -46,8 +46,6 @@ The PCB traces were therefore inspected manually.
 
 Following the oscillator output trace revealed that it was connected to FPGA pin 55.
 
-*Insert PCB trace image here.*
-
 The oscillator reference was then searched online and the datasheet indicated a frequency of:
 
 ```text
