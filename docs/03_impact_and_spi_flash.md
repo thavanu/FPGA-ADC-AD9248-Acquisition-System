@@ -64,8 +64,6 @@ Run User Design
 
 At power-up, the FPGA reads the bitstream stored inside the Flash memory and configures itself automatically.
 
-*Insert SPI Flash photo here.*
-
 ---
 
 # Generating the Bitstream
@@ -77,7 +75,7 @@ The LED test project developed previously was used for this experiment.
 After synthesis and implementation, Xilinx ISE generated the FPGA configuration file:
 
 ```text
-project.bit
+led_blink.bit
 ```
 
 This file contains the complete hardware configuration of the FPGA.
@@ -112,9 +110,6 @@ SPI Flash
 Automatic FPGA Boot
 ```
 
-*Insert iMPACT screenshot here.*
-
----
 
 # Selecting the Flash Device
 
@@ -136,7 +131,6 @@ Since both devices share the same memory capacity and organization, this option 
 
 Programming completed successfully, confirming compatibility between the installed Flash memory and the selected device profile.
 
-*Insert device selection screenshot here.*
 
 ---
 
@@ -149,7 +143,7 @@ This conversion is handled automatically by iMPACT.
 The generated file is typically:
 
 * `.mcs`
-* `.bin`
+
 
 depending on the selected configuration.
 
