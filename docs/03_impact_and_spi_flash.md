@@ -2,17 +2,21 @@
 
 ## Objective
 
-After successfully blinking an LED using JTAG programming, the next step was to make the FPGA design **persistent after power-off**.
+After successfully testing the FPGA with a simple LED design, the next step was to make the configuration persistent after power-off.
 
-By default, the bitstream is loaded into the FPGA via JTAG and is lost when the board is powered down.
+When a Spartan-6 FPGA is programmed through JTAG, the configuration is stored only in volatile memory. As soon as power is removed, the FPGA loses its configuration and must be programmed again.
 
-The objective of this stage was to understand and use the **SPI Flash memory** on the board to store the design permanently.
+The objective of this stage was to understand how the FPGA boots and how to store the design permanently inside the onboard SPI Flash memory.
 
 ---
 
 # Understanding FPGA Configuration Modes
 
-The Spartan-6 FPGA supports multiple configuration methods:
+Unlike a microcontroller, a Spartan-6 FPGA does not contain internal non-volatile memory for storing a user design.
+
+When powered on, the FPGA is initially empty and must load its configuration from an external source.
+
+The Spartan-6 supports multiple configuration methods:
 
 * JTAG programming (volatile)
 * SPI Flash boot (non-volatile)
@@ -21,8 +25,12 @@ The Spartan-6 FPGA supports multiple configuration methods:
 
 | Method    | Persistence | Usage               |
 | --------- | ----------- | ------------------- |
-| JTAG      | Temporary   | Debug / Development |
-| SPI Flash | Permanent   | Autonomous boot     |
+| JTAG      | Temporary   | Development / Debug |
+| SPI Flash | Permanent   | Autonomous Boot     |
+
+With JTAG programming, the bitstream is loaded directly into the FPGA.
+
+With SPI Flash programming, the bitstream is stored in an external memory and automatically loaded every time the board powers up.
 
 ---
 
@@ -30,111 +38,183 @@ The Spartan-6 FPGA supports multiple configuration methods:
 
 The development board includes an external SPI Flash memory connected to the FPGA.
 
-This memory is used to store the bitstream that is loaded automatically at power-up.
+The first step was to identify the memory mounted on the board.
 
-### Role in the system
+By reading the component marking, the following reference was found:
 
-```text id="spi1"
-SPI Flash
-    ↓
-FPGA Configuration Logic
-    ↓
-FPGA Starts Running Design
+```text
+W25Q16JVSIQ
 ```
 
-At power-on, the FPGA reads the bitstream from the flash and configures itself automatically.
+This device is manufactured by Winbond and provides 16 Mbit of non-volatile storage.
+
+### Role in the System
+
+```text
+Power On
+    ↓
+FPGA Starts
+    ↓
+Read SPI Flash
+    ↓
+Load Bitstream
+    ↓
+Run User Design
+```
+
+At power-up, the FPGA reads the bitstream stored inside the Flash memory and configures itself automatically.
+
+*Insert SPI Flash photo here.*
 
 ---
 
 # Generating the Bitstream
 
-Before programming the SPI Flash, the FPGA design must first be compiled into a `.bit` file.
+Before programming the SPI Flash, the FPGA design must first be compiled.
 
-This step was already validated during the LED blink project.
+The LED test project developed previously was used for this experiment.
 
-No changes were required to the Verilog design at this stage.
+After synthesis and implementation, Xilinx ISE generated the FPGA configuration file:
+
+```text
+project.bit
+```
+
+This file contains the complete hardware configuration of the FPGA.
 
 ---
 
 # Using iMPACT Tool
 
-The SPI Flash is programmed using the Xilinx iMPACT tool.
+The SPI Flash is programmed using the Xilinx iMPACT utility.
+
+The FPGA board was connected through USB and the JTAG chain was detected successfully.
 
 ### Programming Flow
 
 1. Open iMPACT
-2. Detect JTAG chain
-3. Identify FPGA and SPI Flash device
-4. Assign `.bit` file
-5. Convert to `.mcs` or PROM file
-6. Program SPI Flash memory
+2. Detect the JTAG chain
+3. Detect the FPGA
+4. Add SPI Flash memory
+5. Assign the generated bitstream
+6. Generate a PROM file
+7. Program the Flash memory
 
-```text id="flow1"
-.bit file → iMPACT → .mcs file → SPI Flash → FPGA boot
+```text
+.bit File
+    ↓
+iMPACT
+    ↓
+PROM File (.mcs)
+    ↓
+SPI Flash
+    ↓
+Automatic FPGA Boot
 ```
+
+*Insert iMPACT screenshot here.*
+
+---
+
+# Selecting the Flash Device
+
+One interesting issue encountered during this step was that the exact Flash reference was not available in the iMPACT device list.
+
+The board contains:
+
+```text
+W25Q16JVSIQ
+```
+
+However, iMPACT provides the following compatible option:
+
+```text
+W25Q16BV/CV
+```
+
+Since both devices share the same memory capacity and organization, this option was selected.
+
+Programming completed successfully, confirming compatibility between the installed Flash memory and the selected device profile.
+
+*Insert device selection screenshot here.*
 
 ---
 
 # Creating the PROM File
 
-To store the design in flash memory, the bitstream must be converted into a PROM format.
+To store the design in Flash memory, the FPGA bitstream must first be converted into a PROM file.
 
-This allows the SPI Flash to understand the configuration data.
+This conversion is handled automatically by iMPACT.
 
 The generated file is typically:
 
 * `.mcs`
-* or `.bin` depending on configuration
+* `.bin`
+
+depending on the selected configuration.
+
+This file is then written into the SPI Flash memory through JTAG.
 
 ---
 
 # Programming the SPI Flash
 
-Once the file is generated, it is written into the SPI Flash memory through JTAG.
+Once the PROM file was generated, the Flash memory was programmed.
 
 After programming:
 
-* The FPGA no longer requires manual JTAG loading
-* The design is stored permanently
-* The board can boot autonomously
+* The FPGA no longer required manual JTAG loading.
+* The design was stored permanently.
+* The board became capable of autonomous startup.
+
+The programming operation completed without errors.
 
 ---
 
 # Boot Behavior Test
 
-After SPI Flash programming, the board was power-cycled.
+To verify correct operation, the board was completely powered off and then powered on again.
 
-### Expected behavior:
+### Expected Behavior
 
-* FPGA should automatically configure itself
-* LED blink design should start immediately
+* FPGA automatically reads the SPI Flash.
+* FPGA loads the stored bitstream.
+* User design starts immediately.
 
-### Result:
+### Result
 
-The LED started blinking without using iMPACT.
+After power-up, the LED turned on automatically without opening iMPACT or reprogramming the FPGA.
 
 This confirmed that:
 
 ✓ SPI Flash programming was successful
-✓ FPGA boot mode is correctly configured
-✓ Design is stored permanently
 
+✓ FPGA boot mode was correctly configured
+
+✓ Bitstream storage was permanent
+
+✓ Automatic configuration was operational
+
+---
 
 # What I Learned
 
-This stage introduced important FPGA concepts:
+This stage introduced several important FPGA concepts:
 
 * Difference between volatile and non-volatile configuration
 * FPGA boot sequence
-* SPI Flash memory role
-* Bitstream conversion process
+* External SPI Flash memories
+* Bitstream generation
+* PROM file creation
 * iMPACT programming workflow
-* Autonomous FPGA boot behavior
+* Automatic FPGA startup
+
+It also demonstrated how to identify components directly from a PCB and how to select a compatible device when the exact memory reference is not available in the programming software.
 
 ---
 
 # Transition to Next Step
 
-With SPI Flash working, the FPGA can now boot independently.
+With SPI Flash programming working correctly, the FPGA was now capable of starting autonomously.
 
-The next step is to move from simple LED logic to **data communication between FPGA and a computer**, starting with UART transmission.
+The next objective was to establish communication between the FPGA and a computer using UART, allowing data generated inside the FPGA to be transmitted and monitored externally.
