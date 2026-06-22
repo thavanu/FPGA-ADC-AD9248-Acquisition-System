@@ -21,7 +21,6 @@ The Python application:
 python/
 
 ├── adc_plot.py
-├── uart_capture.py
 ├── requirements.txt
 └── README.md
 ```
@@ -61,63 +60,6 @@ Modify these parameters in the Python script if necessary.
 
 ---
 
-# Running the Program
-
-```bash
-python adc_plot.py
-```
-
-The program will:
-
-1. Open the serial port.
-2. Receive FPGA data.
-3. Convert the received bytes.
-4. Display the waveform.
-
----
-
-# Data Flow
-
-```text id="12cgvv"
-AD9248
-   │
-   ▼
-FPGA
-   │
-   ▼
-UART
-   │
-   ▼
-Python
-   │
-   ▼
-Real-Time Plot
-```
-
----
-
-# Example Reception Code
-
-```python
-import serial
-
-ser = serial.Serial('COM3', 115200)
-
-while True:
-    data = ser.read()
-```
-
----
-
-# Example Visualization
-
-```python
-import matplotlib.pyplot as plt
-```
-
-The received samples are continuously updated on a graph to visualize the ADC input signal.
-
----
 
 # Expected Results
 
