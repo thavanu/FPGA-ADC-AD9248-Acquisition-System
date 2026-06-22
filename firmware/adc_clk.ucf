@@ -1,0 +1,22 @@
+NET "clk_50m" LOC = P55;
+NET "uart_tx" LOC = P126;
+NET "ACL" LOC = P61;
+NET "BCL_OUT" LOC = P62;
+NET "ADC_D[0]" LOC = P1;
+NET "ADC_D[1]" LOC = P2;
+NET "ADC_D[2]" LOC = P5;
+NET "ADC_D[3]" LOC = P6;
+NET "ADC_D[4]" LOC = P7;
+NET "ADC_D[5]" LOC = P8;
+NET "ADC_D[6]" LOC = P9;
+NET "ADC_D[7]" LOC = P10;
+NET "ADC_D[8]" LOC = P11;
+NET "ADC_D[9]" LOC = P12;
+NET "ADC_D[10]" LOC = P14;
+NET "ADC_D[11]" LOC = P15;
+NET "ADC_D[12]" LOC = P16;
+NET "ADC_D[13]" LOC = P17;
+
+# PlanAhead Generated IO constraints 
+
+
