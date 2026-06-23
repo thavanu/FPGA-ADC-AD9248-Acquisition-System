@@ -1,0 +1,9 @@
+
+NET "uart_tx" LOC = P126;
+NET "clk" LOC = P55;
+NET "rst" LOC = P50;
+
+# PlanAhead Generated IO constraints 
+
+NET "clk" IOSTANDARD = LVCMOS33;
+NET "rst" IOSTANDARD = LVCMOS33;
