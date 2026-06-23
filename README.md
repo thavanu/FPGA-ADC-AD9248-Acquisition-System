@@ -1,11 +1,15 @@
 # FPGA-Based Data Acquisition System
 
+![Language](https://img.shields.io/badge/HDL-Verilog-blue)
+![Tool](https://img.shields.io/badge/Tool-Xilinx%20ISE%2014.7-red)
+![Python](https://img.shields.io/badge/Python-3.x-green)
+![Hardware](https://img.shields.io/badge/Hardware-Spartan--6%20%2B%20AD9248-orange)
+
 A complete FPGA data acquisition project based on a Xilinx Spartan-6 FPGA and an AD9248 14-bit Analog-to-Digital Converter.
 
 The objective of this project is to demonstrate how to build a complete acquisition chain, from an analog signal to real-time visualization on a computer.
 
 The project covers:
-
 * FPGA development using Verilog HDL
 * ADC interfacing
 * UART communication
@@ -13,9 +17,9 @@ The project covers:
 * Python-based visualization
 * Hardware and software integration
 
-## System Overview
+---
 
-The acquisition pipeline is illustrated below:
+## System Overview
 
 ```text
 Analog Signal
@@ -37,70 +41,78 @@ The FPGA captures samples from the ADC, formats the data into UART packets, and 
 
 ---
 
-# Hardware
+## Hardware
 
-## Spartan-6 FPGA Development Board
+### Spartan-6 FPGA Development Board
 
 The project is based on a low-cost Spartan-6 development board featuring:
-
 * Xilinx XC6SLX9 FPGA
 * 50 MHz onboard oscillator
-* USB-UART interface
+* USB-UART interface (CH340)
 * SPI Flash memory
-* JTAG programming support
+* JTAG programming support (CH340)
 
-### FPGA Board
+![FPGA Board](hardware/fpga_aliexpress.png)
 
-![FPGA Board](FPGA-ADC-AD9248-Acquisition-System/hardware/fpga_aliexpress.png)
+| Parameter | Value |
+|-----------|-------|
+| Family | Spartan-6 |
+| Device | XC6SLX9 |
+| Package | TQG144 |
+| Speed grade | -2 |
+| Onboard clock | 50 MHz |
 
-### Resources
+📦 [Buy on AliExpress](https://fr.aliexpress.com/item/1005008389075810.html)
+📄 [Spartan-6 Datasheet](https://docs.amd.com/v/u/en-US/ds160)
 
-* FPGA: XC6SLX9
-* Family: Spartan-6
-* Development Software: Xilinx ISE Design Suite 14.7
-
-Purchase link:
-
-(https://fr.aliexpress.com/item/1005008389075810.html?spm=a2g0o.productlist.main.13.633c112fzdqvxX&algo_pvid=8f1b1beb-d48a-4f57-9c42-c98703847098&algo_exp_id=8f1b1beb-d48a-4f57-9c42-c98703847098-12&pdp_ext_f=%7B%22order%22%3A%2254%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21EUR%2121.19%2121.19%21%21%21160.17%21160.17%21%40211b441e17822058210078723ecf5a%2112000044820516115%21sea%21FR%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3Aa2b2a83%3Bm03_new_user%3A-29895&curPageLogUid=wAorHI3Rjnfj&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005008389075810%7C_p_origin_prod%3A)
-
----
-
-## AD9248 ADC Module
-
-The acquisition front-end is based on the AD9248.
-
-Main characteristics:
-
-* 14-bit resolution
-* Dual-channel architecture
-* Parallel digital outputs
-* High-speed sampling capability
-
-For this project, only one ADC channel is used.
-
-### ADC Board
-
-![AD9248 Board](FPGA-ADC-AD9248-Acquisition-System/hardware/adc_aliexpress.png)
-
-Purchase link:
-
-[(Add board link)]https://fr.aliexpress.com/item/1005010066644896.html?src=google&src=google&albch=shopping&acnt=248-630-5778&isdl=y&slnk=&plac=&mtctp=&albbt=Google_7_shopping&aff_platform=google&aff_short_key=UneMJZVf&gclsrc=aw.ds&albagn=888888&ds_e_adid=&ds_e_matchtype=&ds_e_device=c&ds_e_network=x&ds_e_product_group_id=&ds_e_product_id=fr1005010066644896&ds_e_product_merchant_id=5318022646&ds_e_product_country=FR&ds_e_product_language=fr&ds_e_product_channel=online&ds_e_product_store_id=&ds_url_v=2&albcp=19000710609&albag=&isSmbAutoCall=false&needSmbHouyi=false&gad_source=1&gad_campaignid=17725339642&gbraid=0AAAAACWaBwfqFGN9ztgrbDvkt1rzGN2ly&gclid=CjwKCAjw3ejRBhAdEiwADkqPnyEKqiuYm-JFkeX5G6jdGJnsg4ial5c3OSBx9byDl1F_Vjfxvv3acBoCPxIQAvD_BwE
+> ⚠️ **Driver required (Windows):** This board uses a **CH340** chip for both
+> USB-JTAG and USB-UART. Without the driver, Windows will not detect the board.
+> Download: https://www.wch-ic.com/downloads/CH341SER_EXE.html
+> On Linux, the `ch341` kernel module loads automatically.
 
 ---
 
-## Hardware Setup
+### AD9248 ADC Module
 
-The AD9248 board is connected directly to the Spartan-6 FPGA.
+The acquisition front-end is based on the AD9248, a high-speed 14-bit ADC.
 
-### FPGA ↔ ADC Wiring
+![AD9248 Board](hardware/adc_aliexpress.png)
 
-![FPGA ADC Wiring](images/hardware/fpga_adc_wiring.jpg)
+| Parameter | Value |
+|-----------|-------|
+| Resolution | 14 bits |
+| Max sample rate | 65 MSPS |
+| Channels | 2 (only channel A routed to connector — see note) |
+| Output interface | Parallel CMOS |
+| Supply voltage | 3.3 V |
 
-The FPGA generates the sampling clock, captures the 14-bit ADC output bus, and sends the acquired data to the PC through the onboard USB-UART interface.
+📦 [Buy on AliExpress](https://fr.aliexpress.com/item/1005010066644896.html)
+📄 [AD9248 Datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/AD9248.pdf)
+
+> ⚠️ **Hardware limitation:** Although the AD9248 is dual-channel, on this
+> AliExpress module only **channel A** is routed to the output connector.
+> Channel B data lines and the SMUX pin are not accessible from the FPGA.
 
 ---
 
-# Features
+### Hardware Setup
+
+The AD9248 board is connected directly to the Spartan-6 FPGA board.
+
+| FPGA pin | Signal | Direction | Description |
+|----------|--------|-----------|-------------|
+| P55 | clk_50m | Board osc. | 50 MHz system clock |
+| P61 | ACL | FPGA → ADC | Channel A sampling clock |
+| P62 | BCL | FPGA → ADC | Channel B clock (tied to ACL) |
+| P1–P17 | ADC_D[13:0] | ADC → FPGA | 14-bit parallel data bus |
+| P126 | uart_tx | FPGA → PC | UART TX to USB-UART adapter |
+
+The FPGA generates the sampling clock, captures the 14-bit ADC output bus,
+and sends the acquired data to the PC through the onboard USB-UART interface.
+
+---
+
+## Features
 
 * Verilog FPGA development
 * ADC clock generation
@@ -112,12 +124,11 @@ The FPGA generates the sampling clock, captures the 14-bit ADC output bus, and s
 
 ---
 
-# Project Goals
+## Project Goals
 
 This repository is intended both as a working FPGA project and as an educational resource.
 
 By following the documentation, readers will learn how to:
-
 * Configure a Spartan-6 FPGA
 * Create Verilog designs
 * Interface a parallel ADC
@@ -125,3 +136,13 @@ By following the documentation, readers will learn how to:
 * Program SPI Flash memory
 * Transfer data to a computer
 * Visualize signals using Python
+
+---
+
+## Repository Structure
+
+```
+├── firmware/
+│   ├── 01_led_blink/        ← Step 1: blink an LED, validate toolchain
+│   ├── 02_uart_tx/          ← Step 2: UART transmitter module
+│
