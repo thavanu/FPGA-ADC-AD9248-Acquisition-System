@@ -84,7 +84,7 @@ The acquisition front-end is based on the AD9248, a high-speed 14-bit ADC.
 | Max sample rate | 65 MSPS |
 | Channels | 2 (only channel A routed to connector — see note) |
 | Output interface | Parallel CMOS |
-| Supply voltage | 3.3 V |
+| Supply voltage | 5 V |
 
 📦 [Buy on AliExpress](https://fr.aliexpress.com/item/1005010066644896.html)
 📄 [AD9248 Datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/AD9248.pdf)
@@ -103,11 +103,13 @@ The AD9248 board is connected directly to the Spartan-6 FPGA board.
 |----------|--------|-----------|-------------|
 | P55 | clk_50m | Board osc. | 50 MHz system clock |
 | P61 | ACL | FPGA → ADC | Channel A sampling clock |
-| P62 | BCL | FPGA → ADC | Channel B clock (tied to ACL) |
 | P1–P17 | ADC_D[13:0] | ADC → FPGA | 14-bit parallel data bus |
 | P126 | uart_tx | FPGA → PC | UART TX to USB-UART adapter |
 
-The FPGA generates the sampling clock, captures the 14-bit ADC output bus,
+> **Note:** BCL (channel B clock) is not connected. As mentioned above, channel B
+> data lines are not routed to the connector on this module, so BCL serves no purpose.
+
+The FPGA generates the sampling clock on ACL, captures the 14-bit ADC output bus,
 and sends the acquired data to the PC through the onboard USB-UART interface.
 
 ---
@@ -187,10 +189,10 @@ python uart_v2.py
 ## Troubleshooting
 
 **iMPACT doesn't detect the FPGA**
-→ Install the CH340 driver (see Driver note above)
 → Try a different USB cable (some are power-only)
 
 **No data in Python / blank plot**
+→ Install the CH340 driver (see Driver note above)
 → Confirm UART TX pin idles at 3.3 V with a multimeter
 → Check baud rate matches in firmware and Python (both 115200)
 
