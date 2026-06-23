@@ -51,7 +51,7 @@ The project is based on a low-cost Spartan-6 development board featuring:
 
 ### FPGA Board
 
-![FPGA Board](images/hardware/fpga_board.jpg)
+![FPGA Board](images/hardware/fpga_aliexpress.jpg)
 
 ### Resources
 
