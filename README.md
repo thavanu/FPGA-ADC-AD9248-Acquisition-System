@@ -145,4 +145,56 @@ By following the documentation, readers will learn how to:
 ├── firmware/
 │   ├── 01_led_blink/        ← Step 1: blink an LED, validate toolchain
 │   ├── 02_uart_tx/          ← Step 2: UART transmitter module
-│
+│   └── 03_adc_capture/      ← Step 3: full ADC → UART → PC pipeline
+├── python/
+│   └── uart_v2.py           ← Real-time live plot (matplotlib)
+├── docs/                    ← Detailed documentation for each stage
+└── hardware/                ← Board photos
+```
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+| Tool | Version | Notes |
+|------|---------|-------|
+| Xilinx ISE Design Suite | 14.7 | Free WebPACK edition |
+| Python | 3.8+ | |
+| pyserial | latest | `pip install pyserial` |
+| matplotlib | latest | `pip install matplotlib` |
+| numpy | latest | `pip install numpy` |
+
+### Run the project
+
+**Step 1 — Validate the toolchain:**
+Follow [`firmware/01_led_blink/README.md`](firmware/01_led_blink/README.md)
+
+**Step 2 — UART transmitter:**
+Follow [`firmware/02_uart_tx/README.md`](firmware/02_uart_tx/README.md)
+
+**Step 3 — ADC capture + live display:**
+Follow [`firmware/03_adc_capture/README.md`](firmware/03_adc_capture/README.md), then:
+
+```bash
+cd python
+python uart_v2.py
+```
+
+---
+
+## Troubleshooting
+
+**iMPACT doesn't detect the FPGA**
+→ Install the CH340 driver (see Driver note above)
+→ Try a different USB cable (some are power-only)
+
+**No data in Python / blank plot**
+→ Confirm UART TX pin idles at 3.3 V with a multimeter
+→ Check baud rate matches in firmware and Python (both 115200)
+
+**Noisy or wrong values**
+→ Check GND connection between FPGA and ADC boards
+→ Verify ADC input is within ±Vref range
+→ Double-check pin mapping in the UCF file
