@@ -51,7 +51,7 @@ The project is based on a low-cost Spartan-6 development board featuring:
 
 ### FPGA Board
 
-![FPGA Board](images/hardware/fpga_aliexpress.png)
+![FPGA Board](FPGA-ADC-AD9248-Acquisition-System/hardware/fpga_aliexpress.png)
 
 ### Resources
 
@@ -61,7 +61,7 @@ The project is based on a low-cost Spartan-6 development board featuring:
 
 Purchase link:
 
-[(Add board link)](https://fr.aliexpress.com/item/1005008389075810.html?spm=a2g0o.productlist.main.13.633c112fzdqvxX&algo_pvid=8f1b1beb-d48a-4f57-9c42-c98703847098&algo_exp_id=8f1b1beb-d48a-4f57-9c42-c98703847098-12&pdp_ext_f=%7B%22order%22%3A%2254%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21EUR%2121.19%2121.19%21%21%21160.17%21160.17%21%40211b441e17822058210078723ecf5a%2112000044820516115%21sea%21FR%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3Aa2b2a83%3Bm03_new_user%3A-29895&curPageLogUid=wAorHI3Rjnfj&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005008389075810%7C_p_origin_prod%3A)
+(https://fr.aliexpress.com/item/1005008389075810.html?spm=a2g0o.productlist.main.13.633c112fzdqvxX&algo_pvid=8f1b1beb-d48a-4f57-9c42-c98703847098&algo_exp_id=8f1b1beb-d48a-4f57-9c42-c98703847098-12&pdp_ext_f=%7B%22order%22%3A%2254%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21EUR%2121.19%2121.19%21%21%21160.17%21160.17%21%40211b441e17822058210078723ecf5a%2112000044820516115%21sea%21FR%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3Aa2b2a83%3Bm03_new_user%3A-29895&curPageLogUid=wAorHI3Rjnfj&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005008389075810%7C_p_origin_prod%3A)
 
 ---
 
@@ -80,7 +80,7 @@ For this project, only one ADC channel is used.
 
 ### ADC Board
 
-![AD9248 Board](images/hardware/adc_aliexpress.png)
+![AD9248 Board](FPGA-ADC-AD9248-Acquisition-System/hardware/adc_aliexpress.png)
 
 Purchase link:
 
