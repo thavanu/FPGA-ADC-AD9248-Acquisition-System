@@ -61,17 +61,6 @@ The FPGA performs:
 * Xilinx ISE Design Suite 14.7
 * iMPACT
 
-### Learning Objectives
-
-This board was first used to learn:
-
-1. FPGA project creation
-2. Verilog design
-3. Pin constraints (UCF)
-4. Bitstream generation
-5. FPGA programming
-6. SPI Flash programming
-
 ---
 
 # AD9248 ADC Module
